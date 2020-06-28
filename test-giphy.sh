@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# direct test (saniyt)
+# direct test (sanity)
 curl "https://api.giphy.com/v1/gifs/search?q=test&api_key=fN39vpx7tywdcEf3OqnhTCzxMO5wNuo2&limit=2"
 
 echo
