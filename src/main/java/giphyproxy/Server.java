@@ -12,6 +12,7 @@ public class Server {
 		ServerSocket sock;
 		Socket clientSock;
 
+		// TODO: once we have things working, make this SSL
 		sock = new ServerSocket(1080);
 
 		while (true) {
