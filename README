@@ -1,28 +1,35 @@
-Basic http tunneling proxy for giphy.
+Basic http tunneling proxy for giphy api.
+
+# Usage
 
 Run the project with `./gradlew run` from the root of the project. It will
 listen on port 1080 for proxy requests. Test with the `test-giphy.sh` script.
 
-Currently, we can only handle a single tunneled connection, and hang forever.
-This will be improved.
+# Dependencies
 
-TODO:
--update test client to use SSL for giphy
--use SSL for client<->proxy connection (use a self-signed cert)
--update client to use SSL for proxy connection (may need to force acceptance of a self-signed cert)
--Use threads to handle simultaneous clients
--Refactor code for improved readability and use of OOP design
---HTTP CONNECT parsing/response
---host allowed list checking
---"serve forever" pipe
+Developed for Java 8, using openjdk version "1.8.0_252".
 
-pie-in-the-sky features:
--some kind of actual SSL cert (let's encrypt, DNS, VPS, ...)
--do more searching for existant HTTP parsing libraries? May be nice for something more compliant
--explore an event-based way to handle established tunnels. Either a third-party library or some
+# TODO
+- add test for rejecting non-proxy connections
+- refactor curent code into more modular design (DataTruck, ConnectParser, ConnectionApprover)
+- Properly catch closing sockets & tear down connection
+- update test client to use SSL for giphy
+- use SSL for client<->proxy connection (use a self-signed cert)
+- update client to use SSL for proxy connection (may need to force acceptance of a self-signed cert)
+- Use threads to handle simultaneous clients
+- Refactor code for improved readability and use of OOP design
+	- HTTP CONNECT parsing/response
+	- host allowed list checking
+	- "serve forever" pipe
+
+## pie-in-the-sky goals
+- some kind of actual SSL cert (let's encrypt, DNS, VPS, ...)
+- do more searching for existant HTTP parsing libraries? May be nice for something more compliant
+- explore an event-based way to handle established tunnels. Either a third-party library or some
 internal thing I don't know about. Would probably be nicer than a while(true) loop
+- add auth header for proxy request, to cut down on low-effort abuse
 
-dev log:
--spent some time pre-project brushing up on Java and Gradle
--first few hours were getting a basic giphy test client, putting a basic
+#### dev log
+- Spent some time pre-project brushing up on Java and Gradle
+- First few hours were getting a basic giphy test client, putting a basic
 skeleton in place, and getting something barely functional working.
