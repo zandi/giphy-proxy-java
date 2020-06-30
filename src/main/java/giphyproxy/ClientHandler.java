@@ -24,8 +24,10 @@ public class ClientHandler {
 	ClientHandler(Socket clientSock) {
 		this.clientSock = clientSock;
 
-		ProxyTarget giphy = new ProxyTarget("api.giphy.com", 443);
-		this.tunnelTargetApprover.addApprovedTarget(giphy);
+		ProxyTarget giphySsl = new ProxyTarget("api.giphy.com", 443);
+		ProxyTarget giphyPlain = new ProxyTarget("api.giphy.com", 80);
+		this.tunnelTargetApprover.addApprovedTarget(giphySsl);
+		this.tunnelTargetApprover.addApprovedTarget(giphyPlain);
 	}
 
 	// once things are all connected, just send/receive until
@@ -72,72 +74,31 @@ public class ClientHandler {
 		}
 	}
 
-	// if the host is allowed, and the port is 443 (https)
-	private Boolean hostIsAllowed(String host, String port) {
-		return host.equals(this.giphyApiHostname) && port.equals("80");
-	}
-
-	// parse an HTTP CONNECT string, returning
-	// the host to connect to with hostname/port.
-	// Throw a ParseException if the argument doesn't
-	// seem to be in valid format
-	// 
-	// format: "CONNECT [hostname]:[port] HTTP/1.1
-	private String[] parseConnect(String line) throws ParseException {
-		String[] parts = line.split(" ");
-
-		// verify the connect line is OK, and the host is allowed
-		if (parts.length == 3 &&
-			parts[0].equals("CONNECT") &&
-			parts[2].equals("HTTP/1.1"))
-		{
-			String[] hostParts = parts[1].split(":");
-			
-			if (hostParts.length == 2 &&
-				hostIsAllowed(hostParts[0], hostParts[1]))
-			{
-				return hostParts;
-			}
-			else {
-				throw new ParseException("malformed or forbidden host", 0);
-			}
-		}
-		else {
-			throw new ParseException("malformed CONNECT line", 0);
-		}
-
-	}
-
 	// business logic of the proxy
 	public void handle() {
-		// TODO: read from client, try to parse HTTP CONNECT.
 		System.out.println("Handling!");
 
 		try {
 			BufferedReader clientReader = new BufferedReader(new InputStreamReader(this.clientSock.getInputStream()));
 			BufferedWriter clientWriter = new BufferedWriter(new OutputStreamWriter(this.clientSock.getOutputStream()));
 
-			String line = clientReader.readLine();
-			String[] host = parseConnect(line);
-			System.out.println("CONNECT request to: " + host[0] + ":" + host[1]);
+			// parse CONNECT line
+			ProxyTarget tunnelTarget = ConnectParser.parse(clientReader);
 
-			// flush any remaining lines we were sent, we're ignoring
-			// headers at the moment
-			// TODO: can we just flush()?
-			while(clientReader.ready()) {
-				System.out.println("reading extra input...");
-				clientReader.readLine();
+			// verify the host is allowed
+			if (this.tunnelTargetApprover.isApproved(tunnelTarget)) {
+				// send success
+				ConnectParser.sendHttpSuccess(clientWriter);
+
+				// serve forever
+				DataPipeline dataPipeline = new DataPipeline(this.clientSock, tunnelTarget);
+				dataPipeline.runForever();
 			}
-			System.out.println("done flushing");
-
-			this.giphySock = new Socket(host[0], Integer.parseInt(host[1]));
-			System.out.println("Sending success to client");
-			String httpSuccess = "HTTP/1.1 200 OK\r\n\r\n";
-			clientWriter.write(httpSuccess, 0, httpSuccess.length());
-			clientWriter.flush();
-
-			proxyForever();
-
+			else {
+				// tear down connection
+				// TODO: send HTTP error?
+				this.clientSock.close();
+			}
 		}
 		catch (IOException e) {
 			System.out.println("IOException: " + e.getMessage());
@@ -147,6 +108,7 @@ public class ClientHandler {
 			System.out.println("Error parsing: " + e.getMessage());
 			return;
 		}
+		// TODO: use finally to close sockets? Is that necessary?
 
 		return;
 	}
