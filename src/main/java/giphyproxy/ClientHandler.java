@@ -12,15 +12,20 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
+// TODO: make this runnable to use threads
 public class ClientHandler {
 	private Socket clientSock;
 	private Socket giphySock; // TODO: make SSL before we make listen socket SSL
 
 	// currently only a single hostname for giphy api, convenient!
 	private final String giphyApiHostname = "api.giphy.com";
+	private ConnectionApprover tunnelTargetApprover = new ConnectionApprover();
 
 	ClientHandler(Socket clientSock) {
 		this.clientSock = clientSock;
+
+		ProxyTarget giphy = new ProxyTarget("api.giphy.com", 443);
+		this.tunnelTargetApprover.addApprovedTarget(giphy);
 	}
 
 	// once things are all connected, just send/receive until
