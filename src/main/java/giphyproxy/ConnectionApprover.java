@@ -20,6 +20,19 @@ public class ConnectionApprover {
 	}
 
 	public boolean isApproved(ProxyTarget target) {
-		return this.approvedTargets.contains(target);
+
+		// this.approvedTargets.contains would be nicer, but having
+		// problems getting it to do a proper deep compare
+		for (ProxyTarget t: this.approvedTargets) {
+			if (t.equals(target)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public String toString() {
+		return this.approvedTargets.toString();
 	}
 }
