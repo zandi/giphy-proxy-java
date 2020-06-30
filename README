@@ -11,7 +11,6 @@ Developed for Java 8, using openjdk version "1.8.0_252".
 
 # TODO
 - Properly catch closing sockets & tear down connection
-- update test client to use SSL for giphy
 - use SSL for client<->proxy connection (use a self-signed cert)
 - update client to use SSL for proxy connection (may need to force acceptance of a self-signed cert)
 - Use threads to handle simultaneous clients

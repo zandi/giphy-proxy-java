@@ -25,9 +25,7 @@ public class ClientHandler {
 		this.clientSock = clientSock;
 
 		ProxyTarget giphySsl = new ProxyTarget("api.giphy.com", 443);
-		ProxyTarget giphyPlain = new ProxyTarget("api.giphy.com", 80);
 		this.tunnelTargetApprover.addApprovedTarget(giphySsl);
-		this.tunnelTargetApprover.addApprovedTarget(giphyPlain);
 	}
 
 	// once things are all connected, just send/receive until
