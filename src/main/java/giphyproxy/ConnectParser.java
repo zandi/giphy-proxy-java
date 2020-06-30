@@ -1,6 +1,7 @@
 package giphyproxy;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -53,5 +54,11 @@ public class ConnectParser {
 
 		// return requested host:port (ProxyTarget)
 		return target;
+	}
+
+	public static void sendHttpSuccess(BufferedWriter sockWriter) throws IOException {
+		String httpSuccess = "HTTP/1.1 200 OK\r\n\r\n";
+		sockWriter.write(httpSuccess, 0, httpSuccess.length());
+		sockWriter.flush();
 	}
 }
