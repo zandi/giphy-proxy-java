@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 // just pump data between giphy & client
 public class DataPipeline {
-	private Socket clientSock; // TODO: make SSL
+	private Socket clientSock;
 	private Socket targetSock;
 
 	DataPipeline(Socket client, ProxyTarget target) throws IOException, UnknownHostException {
