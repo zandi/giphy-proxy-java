@@ -21,6 +21,7 @@ Developed for Java 8, using openjdk version "1.8.0_252".
 - add auth header for proxy request, to cut down on low-effort (but low impact) abuse
 - careful/restricted logging to monitor performance, log unexpected crashes
 - Audit code for Java best practices, checking for null, possible DoS, etc.
+- investigate thread management to prevent/monitor resource exhaustion
 
 #### dev log
 - Spent some time pre-project brushing up on Java and Gradle
