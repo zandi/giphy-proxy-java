@@ -8,6 +8,7 @@ listen on port 1080 for proxy requests. Test with the `test-giphy.sh` script.
 # Dependencies
 
 Developed for Java 8, using openjdk version "1.8.0_252".
+tested with curl 7.52.1.
 
 # TODO
 - Listen on both IPv4 and IPv6 TCP 1080
