@@ -44,6 +44,7 @@ public class ConnectParser {
 
 	// parse an HTTP CONNECT command, throw away any headers
 	public static ProxyTarget parse(BufferedReader sockReader) throws ParseException, IOException, NumberFormatException, IllegalArgumentException {
+
 		// TODO: handle malformed connections without newlines
 		String commandLine = sockReader.readLine();
 
@@ -52,7 +53,6 @@ public class ConnectParser {
 
 		// throw away headers to clear out the buffer
 		while(sockReader.ready()) {
-			//System.out.println("reading extra input...");
 			sockReader.readLine();
 		}
 

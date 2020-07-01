@@ -15,13 +15,11 @@ import java.text.ParseException;
 public class ClientHandler extends Thread {
 	private Socket clientSock;
 	private Socket giphySock;
-
-	// currently only a single hostname for giphy api, convenient!
-	private final String giphyApiHostname = "api.giphy.com";
-	private ConnectionApprover tunnelTargetApprover = new ConnectionApprover();
+	private ConnectionApprover tunnelTargetApprover;
 
 	ClientHandler(Socket clientSock) {
 		this.clientSock = clientSock;
+		this.tunnelTargetApprover = new ConnectionApprover();
 
 		ProxyTarget giphySsl = new ProxyTarget("api.giphy.com", 443);
 		this.tunnelTargetApprover.addApprovedTarget(giphySsl);
@@ -40,6 +38,7 @@ public class ClientHandler extends Thread {
 
 			// verify the host is allowed
 			if (this.tunnelTargetApprover.isApproved(tunnelTarget)) {
+
 				// send success
 				ConnectParser.sendHttpSuccess(clientWriter);
 

@@ -38,7 +38,7 @@ public class DataUniPipe extends Thread {
 		}
 		catch (IOException e) {
 			// just cleanly exit the thread, this exception likely
-			// indicates broken sockets, so we're done piping data
+			// indicates broken/closed sockets, so we're done piping data
 			System.out.println("IOException in DataUniPipe: " + e.getMessage());
 		}
 	}

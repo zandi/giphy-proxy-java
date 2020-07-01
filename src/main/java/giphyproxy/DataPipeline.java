@@ -30,15 +30,13 @@ public class DataPipeline {
 		DataUniPipe clientToTarget = new DataUniPipe(clientIn, targetOut);
 		DataUniPipe targetToClient = new DataUniPipe(targetIn, clientOut);
 
-		System.out.println("starting client -> target");
 		clientToTarget.start();
-		System.out.println("starting target -> client");
 		targetToClient.start();
 
 		while (true) {
 			if (!clientToTarget.isAlive() || !targetToClient.isAlive()) {
-				System.out.println("one of the pipe threads has died");
-				// if either half has die, close the sockets
+
+				// if either half dies, close the sockets
 				this.clientSock.close();
 				this.targetSock.close();
 
