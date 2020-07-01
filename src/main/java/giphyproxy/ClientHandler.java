@@ -58,9 +58,13 @@ public class ClientHandler extends Thread {
 		}
 		catch (ParseException e) {
 			System.out.println("Error parsing: " + e.getMessage());
+			try {
+				this.clientSock.close();
+			}
+			catch (IOException e2) { // already gone }
+
 			return;
 		}
-		// TODO: use finally to close sockets? Is that necessary?
 
 		return;
 	}
