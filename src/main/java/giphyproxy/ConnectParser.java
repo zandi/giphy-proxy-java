@@ -13,6 +13,10 @@ public class ConnectParser {
 
 	private static ProxyTarget parseConnectLine(String line) throws ParseException, NumberFormatException, IllegalArgumentException {
 
+		if (line == null) {
+			throw new ParseException("No CONNECT line", 0);
+		}
+
 		String[] parts = line.split(" ");
 
 		// verify the connect line is OK
