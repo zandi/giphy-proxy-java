@@ -26,50 +26,7 @@ public class ClientHandler {
 
 		ProxyTarget giphySsl = new ProxyTarget("api.giphy.com", 443);
 		this.tunnelTargetApprover.addApprovedTarget(giphySsl);
-	}
 
-	// once things are all connected, just send/receive until
-	// something closes or stops
-	private void proxyForever() throws IOException {
-		// client and giphy sockets established, just shuffle between,
-		// starting with the client
-
-		System.out.println("proxy forever!");
-
-		// get appropriate streams for bytes, to be agnostic
-		BufferedOutputStream clientOut = new BufferedOutputStream(this.clientSock.getOutputStream());
-		BufferedInputStream clientIn = new BufferedInputStream(this.clientSock.getInputStream());
-		BufferedOutputStream giphyOut = new BufferedOutputStream(this.giphySock.getOutputStream());
-		BufferedInputStream giphyIn = new BufferedInputStream(this.giphySock.getInputStream());
-
-		int numRead = 0;
-		byte[] client2giphy = new byte[4096];
-		byte[] giphy2client = new byte[4096];
-		while (true) {
-			numRead = 0;
-			if (clientIn.available() > 0) {
-				System.out.println("checking client");
-				numRead = clientIn.read(client2giphy, 0, client2giphy.length);
-				if (numRead > 0) {
-					System.out.println("client -> giphy: " + numRead);
-					giphyOut.write(client2giphy, 0, numRead);
-					giphyOut.flush();
-				}
-			}
-
-			numRead = 0;
-			if (giphyIn.available() > 0) {
-				System.out.println("checking giphy");
-				numRead = giphyIn.read(giphy2client, 0, giphy2client.length);
-				if (numRead > 0) {
-					System.out.println("giphy -> client: " + numRead);
-					clientOut.write(giphy2client, 0, numRead);
-					clientOut.flush();
-				}
-			}
-
-			// TODO: detect either socket close, and tear down if so
-		}
 	}
 
 	// business logic of the proxy
