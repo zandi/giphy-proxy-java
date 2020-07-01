@@ -12,7 +12,6 @@ Developed for Java 8, using openjdk version "1.8.0_252".
 # TODO
 - use SSL for client<->proxy connection (use a self-signed cert)
 - update client to use SSL for proxy connection (may need to force acceptance of a self-signed cert)
-- Use threads to handle simultaneous clients
 - add test for rejecting non-proxy connections
 - Listen on both IPv4 and IPv6 TCP 1080
 

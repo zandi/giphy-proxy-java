@@ -20,7 +20,7 @@ public class Server {
 
 			// TODO: once this works for a single client, thread
 			ClientHandler handler = new ClientHandler(clientSock);
-			handler.handle();
+			handler.run();
 		}
 	}
 }

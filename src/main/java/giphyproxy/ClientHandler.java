@@ -12,8 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
-// TODO: make this runnable to use threads
-public class ClientHandler {
+public class ClientHandler extends Thread {
 	private Socket clientSock;
 	private Socket giphySock; // TODO: make SSL before we make listen socket SSL
 
@@ -30,7 +29,7 @@ public class ClientHandler {
 	}
 
 	// business logic of the proxy
-	public void handle() {
+	public void run() {
 		System.out.println("Handling!");
 
 		try {
