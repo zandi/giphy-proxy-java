@@ -10,20 +10,19 @@ listen on port 1080 for proxy requests. Test with the `test-giphy.sh` script.
 Developed for Java 8, using openjdk version "1.8.0_252".
 
 # TODO
-- use SSL for client<->proxy connection (use a self-signed cert)
-- update client to use SSL for proxy connection (may need to force acceptance of a self-signed cert)
 - add test for rejecting non-proxy connections
 - Listen on both IPv4 and IPv6 TCP 1080
 
-## pie-in-the-sky goals
-- some kind of actual SSL cert (let's encrypt, DNS, VPS, ...)
-- do more searching for existant HTTP parsing libraries? May be nice for something more compliant
-- explore an event-based way to handle established tunnels. Either a third-party library or some
-internal thing I don't know about. Would probably be nicer than a while(true) loop
+## pie-in-the-sky/next step goals
+- a real SSL cert (let's encrypt, DNS, VPS, ...)
+- evaluate HTTP parsing libraries for suitability
+- evaluate event-based networking libraries to refactor pipeline/thread code
 - add auth header for proxy request, to cut down on low-effort (but low impact) abuse
+- careful/restricted logging to monitor performance, log unexpected crashes
 
 #### dev log
 - Spent some time pre-project brushing up on Java and Gradle
 - First few hours were getting a basic giphy test client, putting a basic
 skeleton in place, and getting something barely functional working.
-- Next session was big code refactor
+- Next session was big code refactor to use separate classes, make things more readable
+- Last session was refactoring to use threads, properly detecting closed connections and cleaning up for them, and using SSL for the proxy connection. With some final code cleanup
