@@ -61,7 +61,7 @@ public class ClientHandler extends Thread {
 			try {
 				this.clientSock.close();
 			}
-			catch (IOException e2) { // already gone }
+			catch (IOException e2) { /* already gone */ }
 
 			return;
 		}
