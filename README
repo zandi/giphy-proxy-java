@@ -10,8 +10,9 @@ listen on port 1080 for proxy requests. Test with the `test-giphy.sh` script.
 Developed for Java 8, using openjdk version "1.8.0_252".
 
 # TODO
-- add test for rejecting non-proxy connections
 - Listen on both IPv4 and IPv6 TCP 1080
+- Add unit tests where possible
+- Add more thorough testing & stress testing (not pointing at giphy)
 
 ## pie-in-the-sky/next step goals
 - a real SSL cert (let's encrypt, DNS, VPS, ...)
@@ -19,6 +20,7 @@ Developed for Java 8, using openjdk version "1.8.0_252".
 - evaluate event-based networking libraries to refactor pipeline/thread code
 - add auth header for proxy request, to cut down on low-effort (but low impact) abuse
 - careful/restricted logging to monitor performance, log unexpected crashes
+- Audit code for Java best practices, checking for null, possible DoS, etc.
 
 #### dev log
 - Spent some time pre-project brushing up on Java and Gradle
