@@ -27,33 +27,23 @@ public class DataPipeline {
 
 
 		// pump data
-		int numRead = 0;
-		byte[] client2target = new byte[4096];
-		byte[] target2client = new byte[4096];
+		DataUniPipe clientToTarget = new DataUniPipe(clientIn, targetOut);
+		DataUniPipe targetToClient = new DataUniPipe(targetIn, clientOut);
+
+		System.out.println("starting client -> target");
+		clientToTarget.start();
+		System.out.println("starting target -> client");
+		targetToClient.start();
+
 		while (true) {
-			numRead = 0;
-			if (clientIn.available() > 0) {
-				System.out.println("checking client");
-				numRead = clientIn.read(client2target, 0, client2target.length);
-				if (numRead > 0) {
-					System.out.println("client -> target: " + numRead);
-					targetOut.write(client2target, 0, numRead);
-					targetOut.flush();
-				}
-			}
+			if (!clientToTarget.isAlive() || !targetToClient.isAlive()) {
+				System.out.println("one of the pipe threads has died");
+				// if either half has die, close the sockets
+				this.clientSock.close();
+				this.targetSock.close();
 
-			numRead = 0;
-			if (targetIn.available() > 0) {
-				System.out.println("checking target");
-				numRead = targetIn.read(target2client, 0, target2client.length);
-				if (numRead > 0) {
-					System.out.println("target -> client: " + numRead);
-					clientOut.write(target2client, 0, numRead);
-					clientOut.flush();
-				}
+				return;
 			}
-
-			// TODO: detect either socket close, and tear down if so
 		}
 	}
 }
