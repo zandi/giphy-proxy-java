@@ -35,3 +35,8 @@ dependencies {
 compileJava {
 	options.compilerArgs << "-Xlint:unchecked"
 }
+
+run {
+	systemProperty "javax.net.ssl.keyStore", "proxykeys.jks"
+	systemProperty "javax.net.ssl.keyStorePassword", "password"
+}

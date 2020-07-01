@@ -3,6 +3,8 @@ package giphyproxy;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.SSLServerSocketFactory;
 
 public class Server {
 
@@ -12,13 +14,13 @@ public class Server {
 		ServerSocket sock;
 		Socket clientSock;
 
-		// TODO: once we have things working, make this SSL
-		sock = new ServerSocket(1080);
+		// use the default keystore (easiest)
+		ServerSocketFactory sslSF = SSLServerSocketFactory.getDefault();
+		sock = sslSF.createServerSocket(1080);
 
 		while (true) {
 			clientSock = sock.accept();
 
-			// TODO: once this works for a single client, thread
 			ClientHandler handler = new ClientHandler(clientSock);
 			handler.run();
 		}

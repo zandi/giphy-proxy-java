@@ -14,7 +14,7 @@ import java.text.ParseException;
 
 public class ClientHandler extends Thread {
 	private Socket clientSock;
-	private Socket giphySock; // TODO: make SSL before we make listen socket SSL
+	private Socket giphySock;
 
 	// currently only a single hostname for giphy api, convenient!
 	private final String giphyApiHostname = "api.giphy.com";
@@ -25,7 +25,6 @@ public class ClientHandler extends Thread {
 
 		ProxyTarget giphySsl = new ProxyTarget("api.giphy.com", 443);
 		this.tunnelTargetApprover.addApprovedTarget(giphySsl);
-
 	}
 
 	// business logic of the proxy
@@ -50,7 +49,6 @@ public class ClientHandler extends Thread {
 			}
 			else {
 				// tear down connection
-				// TODO: send HTTP error?
 				this.clientSock.close();
 			}
 		}

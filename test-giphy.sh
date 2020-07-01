@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # direct test (sanity)
-#curl "https://api.giphy.com/v1/gifs/search?q=test&api_key=fN39vpx7tywdcEf3OqnhTCzxMO5wNuo2&limit=2"
-
-echo
-echo 
+#curl "http://api.giphy.com/v1/gifs/search?q=test&api_key=fN39vpx7tywdcEf3OqnhTCzxMO5wNuo2&limit=2"
 
 # note: curl gives us the following tunnel proxy command doing this:
 #  CONNECT api.giphy.com:443 HTTP/1.1
@@ -14,4 +11,6 @@ echo
 # -x: proxy to use
 # -p: use tunneling
 # default port for proxy: 1080
-curl -x http://localhost -p "https://api.giphy.com/v1/gifs/search?q=test&api_key=fN39vpx7tywdcEf3OqnhTCzxMO5wNuo2&limit=2"
+curl -x https://localhost:1080 --proxy-cacert proxycert.crt --proxy-insecure -p "https://api.giphy.com/v1/gifs/search?q=test&api_key=fN39vpx7tywdcEf3OqnhTCzxMO5wNuo2&limit=2"
+
+echo
